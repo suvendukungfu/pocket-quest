@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Pocket Quest is a collection of small, safe outdoor activities to spark movement, observation, and creativity."
+    />
+    <title>Pocket Quest</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="page-header">
+        <p class="eyebrow">Pocket Quest</p>
+        <h1>Tiny Outdoor Challenges</h1>
+        <p class="intro-copy">Pick a small outdoor task, set a timer, and let the moment lead the way.</p>
+      </header>
+
+      <section class="controls" aria-label="Quest filters and controls">
+        <div class="field-group">
+          <label for="category-select">Category</label>
+          <select id="category-select" name="category-select">
+            <option value="">All categories</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label for="difficulty-select">Difficulty</label>
+          <select id="difficulty-select" name="difficulty-select">
+            <option value="">All difficulties</option>
+          </select>
+        </div>
+
+        <button id="new-quest-btn" class="primary-button primary-action" type="button">
+          Pick another quest
+        </button>
+      </section>
+
+      <section class="quest-panel" aria-live="polite">
+        <div class="quest-card" id="quest-card">
+          <p id="quest-category" class="meta-tag">Category</p>
+          <h2 id="quest-title">Quest title</h2>
+          <div class="quest-meta">
+            <span id="quest-difficulty" class="meta-pill">Difficulty</span>
+            <span id="quest-duration" class="meta-pill">Duration</span>
+          </div>
+          <p id="quest-instructions" class="quest-instructions">
+            Choose a quest to begin.
+          </p>
+        </div>
+
+        <div id="empty-state" class="empty-state" hidden>
+          No quests match these filters. Try a broader combination.
+        </div>
+      </section>
+
+      <section class="timer-panel" aria-label="Timer controls">
+        <div class="timer-header">
+          <h2>Timer</h2>
+          <p id="status-region" class="status-region" aria-live="polite">Ready to go.</p>
+        </div>
+
+        <div class="timer-presets" role="group" aria-label="Select timer duration">
+          <button type="button" class="timer-btn is-active" data-minutes="2" aria-pressed="true">2 min</button>
+          <button type="button" class="timer-btn" data-minutes="5" aria-pressed="false">5 min</button>
+          <button type="button" class="timer-btn" data-minutes="10" aria-pressed="false">10 min</button>
+        </div>
+
+        <div id="timer-display" class="timer-display" aria-live="polite">02:00</div>
+
+        <div class="timer-actions">
+          <button id="start-timer-btn" class="primary-action" type="button">Start</button>
+          <button id="pause-timer-btn" class="secondary-action" type="button">Pause</button>
+          <button id="reset-timer-btn" class="secondary-action" type="button">Reset</button>
+          <button id="complete-quest-btn" class="success-button" type="button">Complete quest</button>
+        </div>
+      </section>
+
+      <aside class="pocket-mode" aria-live="polite">
+        <h2>Pocket Mode</h2>
+        <p>
+          Put the phone away, breathe, and focus on the challenge until the timer ends.
+          Keep your attention on the environment, not the screen.
+        </p>
+      </aside>
+
+      <p id="session-summary" class="session-summary">Completed this session: 0</p>
+    </main>
+
+    <div class="sr-only" aria-live="polite" aria-atomic="true" id="live-region"></div>
+
+    <script type="module" src="./src/app.js"></script>
+  </body>
+</html>
