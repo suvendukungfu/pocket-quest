@@ -77,6 +77,14 @@ select:focus-visible {
   outline-offset: 3px;
 }
 
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  border-color: var(--border);
+}
+
 .page-shell {
   position: relative;
   z-index: 1;

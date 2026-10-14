@@ -7,7 +7,26 @@
       name="description"
       content="Pocket Quest is a collection of small, safe outdoor activities to spark movement, observation, and creativity."
     />
-    <title>Pocket Quest</title>
+    <meta name="theme-color" content="#244d3a" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧭</text></svg>"
+    />
+    <!-- Open Graph & Social Cards -->
+    <meta property="og:title" content="Pocket Quest — Tiny Outdoor Challenges" />
+    <meta
+      property="og:description"
+      content="One small quest. A bigger world. Mindful outdoor challenges with built-in timer and Pocket Mode."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://suvendukungfu.github.io/pocket-quest/" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Pocket Quest — Tiny Outdoor Challenges" />
+    <meta
+      name="twitter:description"
+      content="Pick a small outdoor task, set a timer, and let the moment lead the way."
+    />
+    <title>Pocket Quest — Tiny Outdoor Challenges</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
@@ -33,7 +52,12 @@
           </select>
         </div>
 
-        <button id="new-quest-btn" class="primary-button primary-action" type="button">
+        <button
+          id="new-quest-btn"
+          class="primary-button primary-action"
+          type="button"
+          aria-label="Pick another quest"
+        >
           Pick another quest
         </button>
       </section>
@@ -51,7 +75,7 @@
           </p>
         </div>
 
-        <div id="empty-state" class="empty-state" hidden>
+        <div id="empty-state" class="empty-state" hidden aria-live="polite">
           No quests match these filters. Try a broader combination.
         </div>
       </section>
@@ -71,10 +95,10 @@
         <div id="timer-display" class="timer-display" aria-live="polite">02:00</div>
 
         <div class="timer-actions">
-          <button id="start-timer-btn" class="primary-action" type="button">Start</button>
-          <button id="pause-timer-btn" class="secondary-action" type="button">Pause</button>
-          <button id="reset-timer-btn" class="secondary-action" type="button">Reset</button>
-          <button id="complete-quest-btn" class="success-button" type="button">Complete quest</button>
+          <button id="start-timer-btn" class="primary-action" type="button" aria-label="Start quest timer">Start</button>
+          <button id="pause-timer-btn" class="secondary-action" type="button" aria-label="Pause quest timer">Pause</button>
+          <button id="reset-timer-btn" class="secondary-action" type="button" aria-label="Reset quest timer">Reset</button>
+          <button id="complete-quest-btn" class="success-button" type="button" aria-label="Complete current quest">Complete quest</button>
         </div>
       </section>
 

@@ -8,6 +8,7 @@ import {
   filterQuests,
   chooseQuest,
   getQuestById,
+  formatDuration,
 } from '../src/quests.js';
 
 test('quest data has at least 24 entries with valid metadata', () => {
@@ -27,6 +28,26 @@ test('quest data has at least 24 entries with valid metadata', () => {
   assert.equal(new Set(ids).size, QUESTS.length);
 });
 
+test('each category has a balanced set of quests', () => {
+  for (const category of CATEGORIES) {
+    const questsInCategory = QUESTS.filter((quest) => quest.category === category);
+    assert.ok(
+      questsInCategory.length >= 6,
+      `Expected at least 6 quests in category "${category}", found ${questsInCategory.length}`
+    );
+  }
+});
+
+test('each difficulty tier is represented in the quest catalog', () => {
+  for (const difficulty of DIFFICULTIES) {
+    const questsInDifficulty = QUESTS.filter((quest) => quest.difficulty === difficulty);
+    assert.ok(
+      questsInDifficulty.length >= 4,
+      `Expected at least 4 quests in difficulty "${difficulty}", found ${questsInDifficulty.length}`
+    );
+  }
+});
+
 test('filterQuests applies category and difficulty filters together', () => {
   const categoryResult = filterQuests({ category: 'Nature' });
   assert.ok(categoryResult.every((quest) => quest.category === 'Nature'));
@@ -37,6 +58,20 @@ test('filterQuests applies category and difficulty filters together', () => {
   const combinedResult = filterQuests({ category: 'Movement', difficulty: 'Medium' });
   assert.ok(combinedResult.length > 0);
   assert.ok(combinedResult.every((quest) => quest.category === 'Movement' && quest.difficulty === 'Medium'));
+});
+
+test('filterQuests handles case-insensitivity and whitespace trimming', () => {
+  const lowerCase = filterQuests({ category: 'nature', difficulty: 'easy' });
+  assert.ok(lowerCase.length > 0);
+  assert.ok(lowerCase.every((q) => q.category === 'Nature' && q.difficulty === 'Easy'));
+
+  const upperCase = filterQuests({ category: 'MOVEMENT', difficulty: 'MEDIUM' });
+  assert.ok(upperCase.length > 0);
+  assert.ok(upperCase.every((q) => q.category === 'Movement' && q.difficulty === 'Medium'));
+
+  const padded = filterQuests({ category: '  Creativity  ', difficulty: '  Easy  ' });
+  assert.ok(padded.length > 0);
+  assert.ok(padded.every((q) => q.category === 'Creativity' && q.difficulty === 'Easy'));
 });
 
 test('filterQuests handles empty match and invalid input gracefully', () => {
@@ -77,6 +112,11 @@ test('chooseQuest remains deterministic when all results are already recent', ()
   assert.ok(observationIds.includes(result.id));
 });
 
+test('chooseQuest returns null when filter matches zero quests', () => {
+  const result = chooseQuest({ category: 'NonExistentCategory' });
+  assert.equal(result, null);
+});
+
 test('getQuestById returns a matching quest and null for missing ids', () => {
   const quest = getQuestById('observation-001');
   assert.ok(quest);
@@ -84,4 +124,15 @@ test('getQuestById returns a matching quest and null for missing ids', () => {
 
   const missing = getQuestById('missing-id');
   assert.equal(missing, null);
+});
+
+test('formatDuration formats seconds to MM:SS with zero padding and handles edge cases', () => {
+  assert.equal(formatDuration(0), '00:00');
+  assert.equal(formatDuration(5), '00:05');
+  assert.equal(formatDuration(59), '00:59');
+  assert.equal(formatDuration(60), '01:00');
+  assert.equal(formatDuration(125), '02:05');
+  assert.equal(formatDuration(600), '10:00');
+  assert.equal(formatDuration(-10), '00:00');
+  assert.equal(formatDuration(NaN), '00:00');
 });

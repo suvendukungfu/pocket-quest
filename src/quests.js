@@ -228,21 +228,36 @@ export const QUESTS = [
   }
 ];
 
+export function formatDuration(seconds) {
+  const safeSeconds = Math.max(0, Number.isFinite(seconds) ? Math.floor(seconds) : 0);
+  const minutes = Math.floor(safeSeconds / 60);
+  const remainingSeconds = safeSeconds % 60;
+  return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+}
+
 export function filterQuests({ category = null, difficulty = null } = {}) {
   const selectedCategory = typeof category === 'string' ? category.trim() : '';
   const selectedDifficulty = typeof difficulty === 'string' ? difficulty.trim() : '';
 
-  if (selectedCategory && !CATEGORIES.includes(selectedCategory)) {
+  const matchedCategory = selectedCategory
+    ? CATEGORIES.find((c) => c.toLowerCase() === selectedCategory.toLowerCase()) ?? null
+    : null;
+
+  const matchedDifficulty = selectedDifficulty
+    ? DIFFICULTIES.find((d) => d.toLowerCase() === selectedDifficulty.toLowerCase()) ?? null
+    : null;
+
+  if (selectedCategory && !matchedCategory) {
     return [];
   }
 
-  if (selectedDifficulty && !DIFFICULTIES.includes(selectedDifficulty)) {
+  if (selectedDifficulty && !matchedDifficulty) {
     return [];
   }
 
   return QUESTS.filter((quest) => {
-    const matchesCategory = selectedCategory ? quest.category === selectedCategory : true;
-    const matchesDifficulty = selectedDifficulty ? quest.difficulty === selectedDifficulty : true;
+    const matchesCategory = matchedCategory ? quest.category === matchedCategory : true;
+    const matchesDifficulty = matchedDifficulty ? quest.difficulty === matchedDifficulty : true;
     return matchesCategory && matchesDifficulty;
   });
 }

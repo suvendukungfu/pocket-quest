@@ -4,6 +4,7 @@ import {
   chooseQuest,
   filterQuests,
   getQuestById,
+  formatDuration,
 } from './quests.js';
 
 const categorySelect = document.querySelector('#category-select');
@@ -43,12 +44,6 @@ function setStatus(message) {
   statusRegion.textContent = message;
 }
 
-function formatDuration(seconds) {
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = seconds % 60;
-  return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
-}
-
 function syncTimerDisplay() {
   timerDisplay.textContent = formatDuration(state.remainingSeconds);
 }
@@ -57,6 +52,20 @@ function updatePocketModeState() {
   const active = state.isRunning;
   pocketModePanel.classList.toggle('is-active', active);
   timerPanel.classList.toggle('is-active', active);
+
+  if (startButton) {
+    startButton.disabled = active;
+    startButton.setAttribute('aria-disabled', String(active));
+  }
+  if (pauseButton) {
+    pauseButton.disabled = !active;
+    pauseButton.setAttribute('aria-disabled', String(!active));
+  }
+  if (resetButton) {
+    const isPristine = !active && state.remainingSeconds === state.timerMinutes * 60;
+    resetButton.disabled = isPristine;
+    resetButton.setAttribute('aria-disabled', String(isPristine));
+  }
 }
 
 function clearTimer() {
